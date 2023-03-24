@@ -1,0 +1,4 @@
+<h1>Your image is processed</h1>
+
+<%= cl_image_tag @image.original_image.key, height: 300, width: 400, crop: :fill %>
+<%= cl_image_tag @image.processed_image.key, height: 300, width: 400, crop: :fill %>
