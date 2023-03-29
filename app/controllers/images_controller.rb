@@ -4,13 +4,38 @@ class ImagesController < ApplicationController
   end
 
   def create
-    image = Image.new(image_params)
-    image.processed_image = image_params[:original_image]
-    if image.save
-      redirect_to image_path(image)
+    # Get the uploaded image from the form
+    uploaded_image = params[:image][:original_image]
+
+    # Save the image to disk
+    image_path = Rails.root.join('public', 'uploads', "image.jpg")
+    File.open(image_path, 'wb') do |file|
+      file.write(uploaded_image.read)
+    end
+
+    # Call the Python script with the image path as an argument
+    python_output = `python3 python/hello_world.py #{image_path}`
+
+    # Parse the output and save it to the @image instance
+    output_lines = python_output.split("\n")
+    processed_image_path = output_lines[0]
+    text_output = output_lines[1]
+
+    @image = Image.new
+    @image.original_image.attach(uploaded_image)
+    @image.processed_image.attach(
+      io: File.open(processed_image_path),
+      filename: File.basename(processed_image_path)
+    )
+    @image.text_output = text_output
+    if @image.save
+      redirect_to @image
     else
       render :new, status: :unprocessable_entity
     end
+
+    # Delete the uploaded and processed images from the server
+    FileUtils.rm_rf(Dir.glob(Rails.root.join('public', 'uploads', '*')))
   end
 
   def show
