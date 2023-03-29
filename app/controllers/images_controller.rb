@@ -29,13 +29,13 @@ class ImagesController < ApplicationController
     )
     @image.text_output = text_output
     if @image.save
+      # Delete the uploaded and processed images from the server
+      FileUtils.rm_rf(Dir.glob(Rails.root.join('public', 'uploads', '*')))
       redirect_to @image
     else
       render :new, status: :unprocessable_entity
     end
 
-    # Delete the uploaded and processed images from the server
-    FileUtils.rm_rf(Dir.glob(Rails.root.join('public', 'uploads', '*')))
   end
 
   def show
