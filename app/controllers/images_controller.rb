@@ -6,26 +6,23 @@ class ImagesController < ApplicationController
   def create
     # Get the uploaded image from the form
     uploaded_image = params[:image][:original_image]
-
-    # Save the image to disk
-    image_path = Rails.root.join('public', 'uploads', "image.jpg")
-    File.open(image_path, 'wb') do |file|
-      file.write(uploaded_image.read)
-    end
+    image_path = Cloudinary::Uploader.upload(uploaded_image.path)
 
     # Call the Python script with the image path as an argument
-    python_output = `python3 python/hello_world.py #{image_path}`
+    python_output = `python3 python/hello_world.py #{image_path["url"]}`
 
     # Parse the output and save it to the @image instance
     output_lines = python_output.split("\n")
-    processed_image_path = output_lines[0]
+    processed_image_url = output_lines[0]
     text_output = output_lines[1]
 
     @image = Image.new
     @image.original_image.attach(uploaded_image)
+
+    processed_image_data = Cloudinary::Downloader.download(processed_image_url)
     @image.processed_image.attach(
-      io: File.open(processed_image_path),
-      filename: File.basename(processed_image_path)
+      io: StringIO.new(processed_image_data),
+      filename: File.basename(processed_image_url)
     )
     @image.text_output = text_output
     if @image.save
