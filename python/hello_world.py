@@ -5,7 +5,7 @@ import numpy as np
 import requests
 import cloudinary.uploader
 import cloudinary
-import tempfile
+import base64
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -47,12 +47,9 @@ cloudinary.config(
 )
 
 # Save the binary image to a temporary file
-with tempfile.NamedTemporaryFile(suffix=".png") as tmp_file:
-    cv2.imwrite(tmp_file.name, binary_image)
+retval, image = cv2.imencode('.png', binary_image)
+base64_encoded_data = base64.b64encode(image)
+base64_message = base64_encoded_data.decode('utf-8')
 
-    # Upload the binary image file to Cloudinary
-    upload_result = cloudinary.uploader.upload(tmp_file.name)
-
-# Print the image URL and the text output to the console
-print(upload_result["url"])
+print(base64_message)
 print(f'Pretos: {media_black:.2f}% - Brancos: {media_white:.2f}%')

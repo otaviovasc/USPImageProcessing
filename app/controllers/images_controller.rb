@@ -13,17 +13,21 @@ class ImagesController < ApplicationController
 
     # Parse the output and save it to the @image instance
     output_lines = python_output.split("\n")
-    processed_image_url = output_lines[0]
+    base64_processed_image = output_lines[0]
     text_output = output_lines[1]
+
+    # Decode image
+    binary_data = Base64.decode64(base64_processed_image)
+    tempfile = Tempfile.new
+    tempfile.binmode
+    tempfile.write(binary_data)
+    tempfile.rewind
+
 
     @image = Image.new
     @image.original_image.attach(uploaded_image)
-
-    processed_image_data = Cloudinary::Downloader.download(processed_image_url)
-    @image.processed_image.attach(
-      io: StringIO.new(processed_image_data),
-      filename: File.basename(processed_image_url)
-    )
+    # Attach processed image
+    @image.processed_image.attach(io: tempfile, filename: 'image.png', content_type: 'image/png')
     @image.text_output = text_output
     if @image.save
       # Delete the uploaded and processed images from the server
@@ -33,6 +37,8 @@ class ImagesController < ApplicationController
       render :new, status: :unprocessable_entity
     end
 
+    tempfile.close
+    tempfile.unlink
   end
 
   def show
