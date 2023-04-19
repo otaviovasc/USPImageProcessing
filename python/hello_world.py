@@ -3,12 +3,11 @@ import sys
 import os
 import numpy as np
 import requests
-import cloudinary.uploader
 import cloudinary
 import base64
 from dotenv import load_dotenv
 
-load_dotenv()
+# load_dotenv()
 
 # Get the path of the original image from the command line argument
 image_path = sys.argv[1]
@@ -36,15 +35,15 @@ for y in range (height):
 media_white = (white_pixels / (black_pixels + white_pixels)) * 100
 media_black = (black_pixels / (black_pixels + white_pixels)) * 100
 
-# Cloudinary configuration
-cloud_name = os.environ['CLOUDINARY_NAME']
-api_key = os.environ['CLOUDINARY_KEY']
-api_secret = os.environ['CLOUDINARY_SECRET']
-cloudinary.config(
-    cloud_name=cloud_name,
-    api_key=api_key,
-    api_secret=api_secret
-)
+# # Cloudinary configuration
+# cloud_name = os.environ['CLOUDINARY_NAME']
+# api_key = os.environ['CLOUDINARY_KEY']
+# api_secret = os.environ['CLOUDINARY_SECRET']
+# cloudinary.config(
+#     cloud_name=cloud_name,
+#     api_key=api_key,
+#     api_secret=api_secret
+# )
 
 # Save the binary image to a temporary file
 retval, image = cv2.imencode('.png', binary_image)
