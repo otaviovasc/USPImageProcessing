@@ -1,7 +1,7 @@
-import cv2
-import sys
-import os
 import numpy as np
+import sys
+import cv2
+import os
 import requests
 import cloudinary
 import base64
