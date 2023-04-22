@@ -1,0 +1,23 @@
+<div class="container">
+  <h1 class = "mt-5 mb-5 text-center">Meus processamentos</h1>
+
+  <div class="cards">
+    <% @images.each do |image| %>
+      <%= link_to image_path(image), class:"text-decoration-none" do %>
+        <div class="card-trip">
+          <% if image.original_image.attached? %>
+            <%= cl_image_tag image.original_image.key, height: 300, width: 300 %>
+          <% else %>
+            <%= image_tag "https://i.insider.com/56cdb126dd0895dd048b4793?width=600&format=jpg&auto=webp" %>
+          <% end %>
+
+          <div class="card-trip-infos">
+            <div>
+              <h2><%= image.text_output %></h2>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+</div>
