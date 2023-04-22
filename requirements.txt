@@ -1,4 +1,3 @@
 numpy
-sys
 opencv-python
 requests

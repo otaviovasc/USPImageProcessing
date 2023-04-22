@@ -1,4 +1,5 @@
 class ImagesController < ApplicationController
+  before_action :authenticate_user!, only: %i[create index show]
   def new
     @image = Image.new
   end
@@ -23,26 +24,29 @@ class ImagesController < ApplicationController
     tempfile.write(binary_data)
     tempfile.rewind
 
-
-    @image = Image.new
-    @image.original_image.attach(uploaded_image)
+    image = Image.new
+    image.original_image.attach(uploaded_image)
     # Attach processed image
-    @image.processed_image.attach(io: tempfile, filename: 'image.png', content_type: 'image/png')
-    @image.text_output = text_output
-    if @image.save
+    image.processed_image.attach(io: tempfile, filename: 'image.png', content_type: 'image/png')
+    image.text_output = text_output
+    image.user = current_user
+
+    if image.save
       # Delete the uploaded and processed images from the server
-      FileUtils.rm_rf(Dir.glob(Rails.root.join('public', 'uploads', '*')))
-      redirect_to @image
+      redirect_to image
     else
       render :new, status: :unprocessable_entity
     end
-
     tempfile.close
     tempfile.unlink
   end
 
   def show
     @image = Image.find(params[:id])
+  end
+
+  def index
+    @images = Image.where(user: current_user)
   end
 
   private
