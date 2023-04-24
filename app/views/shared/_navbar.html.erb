@@ -12,7 +12,7 @@
       <ul class="navbar-nav me-auto">
         <% if user_signed_in? %>
           <li class="nav-item active">
-            <%= link_to "Sobre", "#", class: "nav-link" %>
+            <%= link_to "Sobre", about_path, class: "nav-link" %>
           </li>
           <li class="nav-item">
             <%= link_to "Meus processamentos", images_path, class: "nav-link" %>
@@ -25,7 +25,7 @@
           </li>
         <% else %>
           <li class="nav-item active">
-            <%= link_to "Sobre", "#", class: "nav-link" %>
+            <%= link_to "Sobre", about_path, class: "nav-link" %>
           </li>
           <li class="nav-item">
             <%= link_to "Meus processamentos", images_path, class: "nav-link" %>

@@ -24,16 +24,16 @@ class ImagesController < ApplicationController
     tempfile.write(binary_data)
     tempfile.rewind
 
+    # Attach infos in a image instance
     image = Image.new
     image.original_image.attach(uploaded_image)
-    # Attach processed image
     image.processed_image.attach(io: tempfile, filename: 'image.png', content_type: 'image/png')
     image.text_output = text_output
     image.user = current_user
 
     if image.save
       # Delete the uploaded and processed images from the server
-      redirect_to image
+      redirect_to image, notice: "Imagem processada"
     else
       render :new, status: :unprocessable_entity
     end
