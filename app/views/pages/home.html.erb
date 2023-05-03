@@ -1,5 +1,43 @@
 <div class="container">
-  <h1>Python Image Processing</h1>
-  <p>Implementing python in rails webapp</p>
-  <%= link_to "Upload your image", new_image_path %>
+  <h1 class="my-5 text-center">Processamento de imagens utilizando Python</h1>
+
+
+  <div class="cards-product">
+
+  <%= link_to new_image_path, class:"text-decoration-none" do %>
+    <div class="card-product">
+      <%= image_tag "microscope.png" %>
+      <div class="card-product-infos">
+        <h2>Lignina na amostra (%)</h2>
+        <p>Algoritmo de determinacao de lignina a partir da imagem <strong>microscópica</strong> do caule.</p>
+      </div>
+    </div>
+  <% end %>
+
+  <%# Empty products %>
+    <div class="card-product">
+      <img src="https://raw.githubusercontent.com/lewagon/fullstack-images/master/uikit/skateboard.jpg" />
+      <div class="card-product-infos">
+        <h2>Product name</h2>
+        <p>Product description with <strong>relevant info</strong> only.</p>
+      </div>
+    </div>
+
+    <div class="card-product">
+      <img src="https://raw.githubusercontent.com/lewagon/fullstack-images/master/uikit/skateboard.jpg" />
+      <div class="card-product-infos">
+        <h2>Product name</h2>
+        <p>Product description with <strong>relevant info</strong> only.</p>
+      </div>
+    </div>
+
+    <div class="card-product">
+      <img src="https://raw.githubusercontent.com/lewagon/fullstack-images/master/uikit/skateboard.jpg" />
+      <div class="card-product-infos">
+        <h2>Product name</h2>
+        <p>Product description with <strong>relevant info</strong> only.</p>
+      </div>
+    </div>
+  </div>
+
 </div>

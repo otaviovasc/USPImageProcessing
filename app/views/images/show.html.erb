@@ -1,7 +1,13 @@
 <div class="container">
-  <h1>Your image is processed</h1>
-
-  <%= cl_image_tag @image.original_image.key, height: 300, width: 400, crop: :fill %>
-  <%= cl_image_tag @image.processed_image.key, height: 300, width: 400, crop: :fill %>
-  <%= @image.text_output %>
+  <div class="row justify-content-center mt-5">
+    <div class="col text-center">
+      <h1>Your image is processed</h1>
+        <div class="images m-5">
+          <%= cl_image_tag @image.original_image.key, height: 300, width: 400, crop: :fill %>
+          <i class="fa-solid fa-arrow-right"></i>
+          <%= cl_image_tag @image.processed_image.key, height: 300, width: 400, crop: :fill %>
+        </div>
+        <%= @image.text_output %>
+      </div>
+  </div>
 </div>

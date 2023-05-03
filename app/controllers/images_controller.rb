@@ -46,7 +46,13 @@ class ImagesController < ApplicationController
   end
 
   def index
-    @images = Image.where(user: current_user)
+    @images = Image.where(user: current_user).sort_by(&:created_at).reverse
+  end
+
+  def destroy
+    image = Image.find(params[:id])
+    image.destroy
+    redirect_to images_path, notice: "Imagem apagada com sucesso."
   end
 
   private

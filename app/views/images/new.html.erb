@@ -1,11 +1,16 @@
 <div class="container">
-  <h1>Upload your image</h1>
-  <%= simple_form_for(@image) do |f| %>
-    <div class="form-inputs">
-      <%= f.input :original_image, as: :file %>
+  <div class="row justify-content-center mt-5">
+    <div class="col-6 text-center">
+      <h1>Envie a imagem a processar</h1>
+      <p>Isso pode levar alguns segundos.</p>
+      <%= simple_form_for(@image) do |f| %>
+        <div class="form-inputs">
+          <%= f.input :original_image, label: false, as: :file %>
+        </div>
+        <div class="form-actions">
+          <%= f.button :submit, "Processar foto", class: "btn btn-primary w-100"%>
+        </div>
+      <% end %>
     </div>
-    <div class="form-actions">
-      <%= f.button :submit, "Processar foto", class: "btn btn-primary"%>
-    </div>
-  <% end %>
+  </div>
 </div>
